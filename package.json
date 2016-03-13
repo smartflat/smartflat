@@ -1,0 +1,78 @@
+{
+  "name": "home",
+  "version": "0.0.1",
+  "description": "Home automatation FTW.",
+  "main": "build/",
+  "scripts": {
+    "copy-web": "cp source/web/index.html build/web/",
+    "build-server": "babel-node --presets es2015 source/server",
+    "build-web": "webpack --config source/various/webpack.js ./source/web/index.jsx ./build/web/app.js",
+    "watch-server": "nodemon --ignore build --ignore source/web --exec npm run build-server",
+    "watch-web": "nodemon -e css,html,jpg,js,jsx,png,scss --ignore build/ --exec \"npm run build-web && npm run copy-web\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dodekeract/home.git"
+  },
+  "keywords": [
+    "home",
+    "automatation",
+    "house",
+    "control",
+    "ifttt"
+  ],
+  "author": "Florian Wendelborn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dodekeract/home/issues"
+  },
+  "homepage": "https://github.com/dodekeract/home#readme",
+  "dependencies": {
+    "babel-loader": "^6.2.4",
+    "babel-preset-stage-0": "^6.5.0",
+    "body-parser": "^1.15.0",
+    "flux": "^2.1.1",
+    "koa": "^1.1.2",
+    "koa-router": "^5.4.0",
+    "koa-static": "^2.0.0",
+    "maker-ifttt": "^1.0.0",
+    "philips-hue": "^1.1.9",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-mini-router": "^2.0.0",
+    "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.5"
+  },
+  "remarkConfig": {
+    "plugins": {
+      "lint": {
+        "list-item-indent": "space",
+        "no-tabs": false,
+        "no-html": false,
+        "maximum-line-length": false,
+        "list-item-spacing": false,
+        "no-missing-blank-lines": false
+      }
+    }
+  },
+  "jscsConfig": {
+    "maximumLineLength": 300,
+    "requireCommaBeforeLineBreak": false,
+    "requirePaddingNewLinesAfterBlocks": false,
+    "requireSpacesInsideObjectBrackets": false,
+    "requireTrailingComma": false,
+    "validateIndentation": "\t",
+    "validateQuoteMarks": false,
+    "disallowSpacesInsideBrackets": false,
+    "disallowSpacesInsideArrayBrackets": false,
+    "disallowSpacesInFunctionDeclaration": false
+  },
+  "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
+    "nodemon": "^1.9.1",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
