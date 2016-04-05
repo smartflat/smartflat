@@ -5,10 +5,17 @@
   "main": "build/",
   "scripts": {
     "copy-web": "cp source/web/index.html build/web/",
-    "build-server": "babel-node --presets es2015 source/server",
+    "start": "node build/server",
+    "build-server": "babel --presets es2015 source/server -d build/server",
     "build-web": "webpack --config source/various/webpack.js ./source/web/index.jsx ./build/web/app.js",
-    "watch-server": "nodemon --ignore build --ignore source/web --exec npm run build-server",
-    "watch-web": "nodemon -e css,html,jpg,js,jsx,png,scss --ignore build/ --exec \"npm run build-web && npm run copy-web\""
+    "watch-server": "nodemon --ignore build --ignore source/web/ --exec npm run build-server",
+    "watch-web": "nodemon -e css,html,jpg,js,jsx,png,scss --ignore build/ --ignore source/server/ --exec \"npm run build-web && npm run copy-web\"",
+    "scp-watch-server": "nodemon --ignore build --ignore source/web/ --exec \"npm run build-server && npm run scp-server\"",
+    "scp-watch-web": "nodemon -e css,html,jpg,js,jsx,png,scss --ignore build/ --ignore source/server/ --exec \"npm run build-web && npm run copy-web && npm run scp-web\"",
+    "scp": "scp -r ~/code/home pi@pi3:~/code/home",
+    "scp-web": "scp -r ~/code/home/build/web pi@pi3:~/code/home/build",
+    "scp-server": "scp -r ~/code/home/build/server pi@pi3:~/code/home/build",
+    "watch-start": "nodemon --ignore build/web build/server"
   },
   "repository": {
     "type": "git",
@@ -28,20 +35,27 @@
   },
   "homepage": "https://github.com/dodekeract/home#readme",
   "dependencies": {
+    "babel-core": "^6.7.2",
     "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.7.2",
     "babel-preset-stage-0": "^6.5.0",
     "body-parser": "^1.15.0",
     "flux": "^2.1.1",
+    "gpio": "^0.2.7",
     "koa": "^1.1.2",
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0",
     "maker-ifttt": "^1.0.0",
     "philips-hue": "^1.1.9",
+    "ping": "^0.1.10",
+    "raspi-sensors": "^0.2.7",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-mini-router": "^2.0.0",
+    "react-rt-chart": "^1.1.2",
     "socket.io": "^1.4.5",
-    "socket.io-client": "^1.4.5"
+    "socket.io-client": "^1.4.5",
+    "wake_on_lan": "0.0.4"
   },
   "remarkConfig": {
     "plugins": {

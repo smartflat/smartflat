@@ -1,7 +1,9 @@
 const io = require('socket.io')();
-const hue = require('./hue');
+const hue = require('./hue-legacy');
 const config = require('./config');
 const credentials = require('../../credentials.json');
+
+export default io;
 
 export function init (server) {
 	io.attach(server);
@@ -14,7 +16,6 @@ io.on('connection', function (socket) {
 			if (!socket.isAuthenticated) {
 				console.info(`${socket.id} authenticated`);
 				allow(socket);
-				socket.isAuthenticated = true;
 				callback(null, 'success');
 			} else {
 				console.warn(`${socket.id} already authenticated`);
@@ -32,6 +33,9 @@ io.on('connection', function (socket) {
 });
 
 const allow = (socket) => {
+	socket.join('authenticated');
+	socket.isAuthenticated = true;
+
 	socket.on('light:on', function (options) {
 		console.log(`${socket.id} light ${options.id} turned on`);
 		hue.light(options.id).on();

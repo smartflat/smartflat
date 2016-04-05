@@ -1,11 +1,14 @@
-var Maker = require('maker-ifttt');
+import Maker from 'maker-ifttt';
 
-var credentials = require('../../credentials.json');
+const credentials = require('../../credentials.json');
 
-var trigger = new Maker(credentials.maker.token);
+const trigger = new Maker(credentials.maker.token);
 
-// trigger.triggerEvent('notify', 'Home Started', function (res) {
-// 	res.on('data', function (chunk) {
-// 		console.log('Response: ' + chunk);
-// 	});
-// });
+export function notify (message) {
+	trigger.triggerEvent('notify', message, function (res) {
+		console.log('notify', message);
+		res.on('data', function (chunk) {
+			console.log('Response: ' + chunk);
+		});
+	});
+}

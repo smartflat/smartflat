@@ -6,6 +6,7 @@ import Layout from './layout.jsx';
 import Light from './light.jsx';
 import Settings from './settings.jsx';
 import Alerts from './alerts.jsx';
+import Chart from './chart.jsx';
 
 // use es5 because es6 doesn't support mixins
 const App = React.createClass({
@@ -21,8 +22,10 @@ const App = React.createClass({
 		return (
 			<div>
 				<Layout/>
-				<Alerts/>
-				{this.renderCurrentRoute()}
+				<div class="content">
+					<Alerts/>
+					{this.renderCurrentRoute()}
+				</div>
 			</div>
 		);
 	},
@@ -41,6 +44,7 @@ const App = React.createClass({
 				<div className="row">
 					<Light id="2" name="Kitchen" />
 					<Light id="1" name="Living Room" />
+					<Chart/>
 				</div>
 			</div>
 		);
