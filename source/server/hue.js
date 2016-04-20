@@ -3,6 +3,8 @@ const lib = new Hue();
 
 const credentials = require('../../credentials.json');
 
+const io = require('./socket');
+
 lib.bridge = credentials.hue.host;
 lib.username = credentials.hue.token;
 
@@ -85,9 +87,17 @@ export function all (on, colorValue) {
 	});
 }
 
+export function getState () {
+	return _state;
+}
+
 // apply state
 
 function applyOn (id) {
+	io.update('light', {
+		id: id,
+		state: _state[id]
+	});
 	if (_state[id].on) {
 		lib.light(id).on();
 	} else {

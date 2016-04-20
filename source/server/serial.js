@@ -1,7 +1,7 @@
 // imports
 
 import {SerialPort} from 'serialport';
-import io from './socket';
+const io = require('./socket');
 
 // config
 
@@ -91,9 +91,25 @@ DEVICES.forEach((device) => {
 
 			// send to socket
 
-			if (content && content.id === 42) {
-				let message = deviceState.data[content.id];
-				io.to('authenticated').emit('data', message);
+			if (content) {
+				let d = deviceState.data[content.id];
+
+				let message = [];
+
+				const add = (type) => {
+					if (d[type] !== false) message.push({
+						type: type,
+						room: content.id,
+						value: d[type]
+					});
+				};
+
+				add('brightness');
+				add('humidity');
+				add('motion');
+				add('temperature');
+
+				io.update('sensors', message);
 			}
 
 			// cache incomplete lines

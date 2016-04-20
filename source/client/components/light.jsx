@@ -1,14 +1,30 @@
 import React from 'react';
 
+import store from '../stores/devices';
+
 export default class Light extends React.Component {
 	constructor () {
 		super();
-		this.state = {
-			on: false
-		};
+		this.state = store.getState();
+
+		this._onChange = this._onChange.bind(this);
+	}
+
+	componentDidMount () {
+		store.addChangeListener(this._onChange);
+	}
+
+	_onChange (data) {
+		this.setState(store.getState());
+	}
+
+	componentWillUnmount () {
+		store.removeChangeListener(this._onChange);
 	}
 
 	render () {
+		let className = this.state.lights[this.props.id].on ? 'success' : 'danger';
+		let label = this.state.lights[this.props.id].on ? 'On' : 'Off';
 		return (
 			<div className="col-xs-6">
 				<div className="panel panel-default">
@@ -17,8 +33,8 @@ export default class Light extends React.Component {
 					</div>
 					<div className="panel-body">
 						<div className="btn-group" data-toggle="buttons">
-							<button ref="toggle" className={'btn btn-' + (this.state.on ? 'success' : 'danger')} onFocus={this.blur.bind(this, 'toggle')} onClick={this.toggle.bind(this)}>
-								{this.state.on ? 'On' : 'Off'}
+							<button ref="toggle" className={'btn btn-' + className} onFocus={this.blur.bind(this, 'toggle')} onClick={this.toggle.bind(this)}>
+								{label}
 							</button>
 							<button ref="white" className="btn btn-default" style={{backgroundColor: 'white'}} onFocus={this.blur.bind(this, 'white')} onClick={this.white.bind(this)}>
 								&nbsp;
@@ -58,20 +74,8 @@ export default class Light extends React.Component {
 	}
 
 	toggle () {
-		console.log('toggle');
-
-		let id = this.props.id;
-
-		let isOn = !this.state.on;
-
-		this.setState({
-			on: isOn
-		});
-
-		isOn = isOn ? 'on' : 'off';
-
-		window.socket.emit(`light:${isOn}`, {
-			id: id
+		window.socket.emit('light:toggle', {
+			id: this.props.id
 		});
 	}
 }

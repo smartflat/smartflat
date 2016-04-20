@@ -17,7 +17,7 @@ const send = (err, data) => {
 			state.temperature = data.value.toFixed(2);
 		} else if (data.type === 'Humidity') {
 			state.humidity = data.value.toFixed(2);
-			io.to('authenticated').emit('data', state);
+			io.update('data', state);
 		}
 	} else {
 		console.error('dht22', err);

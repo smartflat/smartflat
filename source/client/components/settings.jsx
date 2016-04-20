@@ -3,7 +3,7 @@ import React from 'react';
 // actions
 import utilityActions from '../actions/utilities.js';
 
-export default class Light extends React.Component {
+export default class Settings extends React.Component {
 	constructor () {
 		super();
 	}

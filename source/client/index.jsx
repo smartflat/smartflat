@@ -12,6 +12,7 @@ import utilityStore from './stores/utilities.js';
 
 // actions
 import utilityActions from './actions/utilities.js';
+import deviceActions from './actions/devices.js';
 
 // connect & render
 window.onload = () => {
@@ -25,6 +26,7 @@ window.onload = () => {
 			document.getElementsByTagName('div')[0]
 		);
 	});
+	deviceActions.initialize();
 };
 
 // save state
@@ -36,8 +38,3 @@ window.addEventListener('hashchange', function () {
 
 // restore state
 location.hash = (localStorage.getItem('state')) ? localStorage.getItem('state') : '';
-
-// prevent scrolling on iOS
-window.addEventListener('touchmove', function () {
- 	event.preventDefault() ;
-});

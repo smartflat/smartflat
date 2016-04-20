@@ -1,46 +1,69 @@
 import RTChart from 'react-rt-chart';
 import React from 'react';
 
+import store from '../stores/devices';
+
 export default class Chart extends React.Component {
 	constructor () {
 		super();
 
-		this.state = {
-			temperature: 0,
-			humidity: 0,
-			date: new Date()
-		};
+		this.state = store.getState();
 
 		this.componentDidMount = this.componentDidMount.bind(this);
 		this.render = this.render.bind(this);
-		this.handleData = this.handleData.bind(this);
+		this._onChange = this._onChange.bind(this);
 	}
 
 	componentDidMount () {
-		window.socket.on('data', this.handleData);
+		store.addChangeListener(this._onChange);
 	}
 
-	handleData (data) {
-		this.setState({
-			date: new Date(),
-			temperature: data.temperature,
-			humidity: data.humidity
-		});
+	_onChange (data) {
+		this.setState(store.getState());
 	}
 
 	componentWillUnmount () {
-		window.socket.removeListener('data', this.handleData);
+		store.removeChangeListener(this._onChange);
 	}
 
 	render () {
+
+		// determine sensors to render
+
+		let fields = Object.keys(this.state.rooms[this.props.room]);
+		let index = fields.indexOf('motion');
+		if (index) fields.splice(index, 1);
+
+		// don't render chart without data
+
+		let chart = fields.length ? (
+			<RTChart
+				chart={{
+					interaction: {
+						enabled: false
+					}
+				}}
+				maxValues={60}
+				data={Object.assign({
+					temperature: this.state.rooms[this.props.room].temperature,
+					humidity: this.state.rooms[this.props.room].humidity,
+					brightness: this.state.rooms[this.props.room].brightness/2.55,
+					date: new Date()
+				})}
+				fields={fields}
+			/>
+		) : '';
 		return (
-			<div className="col-xs-12">
+			<div className="col-md-6 col-xs-12">
 				<div className="panel panel-default">
 					<div className="panel-heading">
-						Real-Time Temperature & Humidity
+						{this.props.name} Sensors
 					</div>
 					<div className="panel-body">
-						<RTChart maxValues={60} data={Object.assign({}, this.state)} fields={['temperature', 'humidity']}/>
+						<div className={'alert alert-' + (this.state.rooms[this.props.room].motion === 1 ? 'danger' : 'success')}>
+							Motion {this.state.rooms[this.props.room].motion === 1 ? 'detected' : 'not detected'}
+						</div>
+						{chart}
 					</div>
 				</div>
 			</div>

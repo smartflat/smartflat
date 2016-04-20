@@ -4,6 +4,7 @@ import {RouterMixin} from 'react-mini-router';
 // components
 import Layout from './layout.jsx';
 import Light from './light.jsx';
+// import Map from './map.jsx';
 import Settings from './settings.jsx';
 import Alerts from './alerts.jsx';
 import Chart from './chart.jsx';
@@ -42,9 +43,11 @@ const App = React.createClass({
 		return (
 			<div className="container">
 				<div className="row">
-					<Light id="2" name="Kitchen" />
-					<Light id="1" name="Living Room" />
-					<Chart/>
+					<Light id="1" name="Living Room"/>
+					<Light id="2" name="Kitchen"/>
+					<Chart room="42" name="Living Room"/>
+					<Chart room="43" name="Kitchen"/>
+					{/*<Map/>*/}
 				</div>
 			</div>
 		);

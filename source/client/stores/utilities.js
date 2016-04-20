@@ -6,6 +6,8 @@ import dispatcher from '../dispatchers/utilities.js';
 import constants from '../constants/utilities.js';
 import actions from '../actions/utilities.js';
 
+import deviceActions from '../actions/devices.js';
+
 // alias
 const c = constants;
 
