@@ -1,2 +1,2 @@
 # home
-Home automatation FTW.
+Home automation FTW.
