@@ -13,22 +13,28 @@ export default class Chart extends React.Component {
 
 		this.componentDidMount = this.componentDidMount.bind(this);
 		this.render = this.render.bind(this);
+		this.handleData = this.handleData.bind(this);
 	}
 
 	componentDidMount () {
-		let that = this;
-		window.socket.on('data', function (data) {
-			that.setState({
-				date: new Date(),
-				temperature: data.temperature,
-				humidity: data.humidity
-			});
+		window.socket.on('data', this.handleData);
+	}
+
+	handleData (data) {
+		this.setState({
+			date: new Date(),
+			temperature: data.temperature,
+			humidity: data.humidity
 		});
+	}
+
+	componentWillUnmount () {
+		window.socket.removeListener('data', this.handleData);
 	}
 
 	render () {
 		return (
-			<div className="col-sm-12">
+			<div className="col-xs-12">
 				<div className="panel panel-default">
 					<div className="panel-heading">
 						Real-Time Temperature & Humidity

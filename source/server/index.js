@@ -11,6 +11,8 @@ const dht22  = require('./dht22');
 const pir    = require('./pir');
 const hue    = require('./hue');
 const config = require('./config');
+const _433   = require('./433');
+const serial = require('./serial');
 
 app
 	.use(http.serve)

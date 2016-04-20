@@ -4,18 +4,19 @@
   "description": "Home automatation FTW.",
   "main": "build/",
   "scripts": {
-    "copy-web": "cp source/web/index.html build/web/",
+    "copy-client": "cp source/client/index.html build/client/",
     "start": "node build/server",
     "build-server": "babel --presets es2015 source/server -d build/server",
-    "build-web": "webpack --config source/various/webpack.js ./source/web/index.jsx ./build/web/app.js",
-    "watch-server": "nodemon --ignore build --ignore source/web/ --exec npm run build-server",
-    "watch-web": "nodemon -e css,html,jpg,js,jsx,png,scss --ignore build/ --ignore source/server/ --exec \"npm run build-web && npm run copy-web\"",
-    "scp-watch-server": "nodemon --ignore build --ignore source/web/ --exec \"npm run build-server && npm run scp-server\"",
-    "scp-watch-web": "nodemon -e css,html,jpg,js,jsx,png,scss --ignore build/ --ignore source/server/ --exec \"npm run build-web && npm run copy-web && npm run scp-web\"",
+    "build-client-fast": "webpack --config source/various/webpack.js ./source/client/index.jsx ./build/client/app.js",
+    "build-client-slow": "webpack --optimize-minimize --config source/various/webpack.js ./source/client/index.jsx ./build/client/app.js",
+    "watch-server": "nodemon --ignore build --ignore source/client/ --exec npm run build-server",
+    "watch-client": "nodemon -e css,html,jpg,js,jsx,png,scss --ignore build/ --ignore source/server/ --exec \"npm run build-client-slow && npm run copy-client\"",
+    "scp-watch-server": "nodemon --ignore build --ignore source/client/ --exec \"npm run build-server && npm run scp-server\"",
+    "scp-watch-client": "nodemon -e css,html,jpg,js,jsx,png,scss --ignore build/ --ignore source/server/ --exec \"npm run build-client-fast && npm run copy-client && npm run scp-client && npm run build-client-slow && npm run scp-client\"",
     "scp": "scp -r ~/code/home pi@pi3:~/code/home",
-    "scp-web": "scp -r ~/code/home/build/web pi@pi3:~/code/home/build",
+    "scp-client": "scp -r ~/code/home/build/client pi@pi3:~/code/home/build",
     "scp-server": "scp -r ~/code/home/build/server pi@pi3:~/code/home/build",
-    "watch-start": "nodemon --ignore build/web build/server"
+    "watch-start": "nodemon --ignore build/client build/server"
   },
   "repository": {
     "type": "git",
@@ -53,9 +54,12 @@
     "react-dom": "^0.14.7",
     "react-mini-router": "^2.0.0",
     "react-rt-chart": "^1.1.2",
+    "rpi-433": "^1.1.1",
+    "serialport": "^2.1.0",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
-    "wake_on_lan": "0.0.4"
+    "validator": "^5.2.0",
+    "wake_on_lan": "^0.0.4"
   },
   "remarkConfig": {
     "plugins": {

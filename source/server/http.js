@@ -1,10 +1,15 @@
 const router = require('koa-router')();
-const serve = require('koa-static')('build/web');
+const serve = require('koa-static')('build/client');
 
 const gpio = require('./gpio');
 const hue = require('./hue');
 const maker = require('./maker');
 const wake = require('./wake-on-lan');
+const dht22 = require('./dht22');
+const pir = require('./pir');
+const espeak = require('./espeak');
+
+const _433 = require('./433');
 
 const credentials = require('../../credentials.json');
 
@@ -55,14 +60,50 @@ router.get('/hook/' + credentials.hookSecret + '/:type/:id/:action', function * 
 					hue.rainbow(2);
 					hue.set(1, false);
 				break;
+				case 'rainbow':
+					hue.set(1, true);
+					hue.set(2, true);
+					hue.color(1, 'red');
+					hue.color(2, 'blue');
+					hue.rainbow(1);
+					hue.rainbow(2);
+					_433.speak('Rainbows everywhere!');
+				break;
 			}
 		break;
 		case 'status':
+			let message;
 			switch (id) {
 				case 'door':
+					message = 'Door is ' + (gpio.getState().door.open ? 'open' : 'closed');
 					switch (action) {
 						case 'notify':
-							maker.notify('Door is ' + (gpio.getState().door.open ? 'open' : 'closed'));
+							maker.notify(message);
+						break;
+						case 'speak':
+							_433.speak(message);
+						break;
+					}
+				break;
+				case 'temperature':
+					message = 'Temperature is ' + dht22.getState().temperature + '\xB0C and Humidity is ' + dht22.getState().humidity + '%';
+					switch (action) {
+						case 'notify':
+							maker.notify(message);
+						break;
+						case 'speak':
+							_433.speak(message);
+						break;
+					}
+				break;
+				case 'pir':
+					message = 'Motion was ' + (pir.getState().pir ? 'detected.' : 'not detected.');
+					switch (action) {
+						case 'notify':
+							maker.notify(message);
+						break;
+						case 'speak':
+							_433.speak(message);
 						break;
 					}
 				break;
@@ -74,6 +115,26 @@ router.get('/hook/' + credentials.hookSecret + '/:type/:id/:action', function * 
 					switch (action) {
 						case 'wake':
 							wake.workstation();
+						break;
+					}
+				break;
+				case 'tv':
+					switch (action) {
+						case 'wake':
+							// wake.tv();
+						break;
+					}
+				break;
+				case 'speaker':
+					switch (action) {
+						case 'on':
+							_433.power(true);
+						break;
+						case 'off':
+							_433.power(false);
+						break;
+						case 'toggle':
+							_433.toggle();
 						break;
 					}
 				break;

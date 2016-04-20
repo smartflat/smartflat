@@ -22,7 +22,7 @@ const App = React.createClass({
 		return (
 			<div>
 				<Layout/>
-				<div class="content">
+				<div>
 					<Alerts/>
 					{this.renderCurrentRoute()}
 				</div>

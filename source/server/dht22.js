@@ -3,7 +3,7 @@ import io from './socket';
 
 const DHT22 = new Sensor({
 	type: 'DHT22',
-	pin: 8
+	pin: 4
 });
 
 let state = {
@@ -20,9 +20,13 @@ const send = (err, data) => {
 			io.to('authenticated').emit('data', state);
 		}
 	} else {
-		console.error(err);
+		console.error('dht22', err);
 	}
 }
 
-DHT22.fetch(send);
-DHT22.fetchInterval(send, 1);
+// DHT22.fetch(send);
+// DHT22.fetchInterval(send, 2);
+
+export function getState () {
+	return state;
+}

@@ -2,3 +2,9 @@ node_modules/
 npm-debug.log
 build/
 credentials.json
+
+# platformio
+
+.pioenvs
+.clang_complete
+.gcc-flags.json
