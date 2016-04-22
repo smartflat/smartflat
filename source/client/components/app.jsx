@@ -2,20 +2,23 @@ import React from 'react';
 import {RouterMixin} from 'react-mini-router';
 
 // components
-import Layout from './layout.jsx';
-import Light from './light.jsx';
-// import Map from './map.jsx';
-import Settings from './settings.jsx';
 import Alerts from './alerts.jsx';
-import Chart from './chart.jsx';
+import Control from './control.jsx';
+import Dashboard from './dashboard.jsx';
+import Layout from './layout.jsx';
+import Scenes from './scenes.jsx';
+import Settings from './settings.jsx';
+import Rooms from './rooms.jsx';
 
 // use es5 because es6 doesn't support mixins
 const App = React.createClass({
 	mixins: [RouterMixin],
 
 	routes: {
-		'/': 'control',
+		'/': 'dashboard',
+		'/rooms': 'rooms',
 		'/control': 'control',
+		'/scenes': 'scenes',
 		'/settings': 'settings'
 	},
 
@@ -31,29 +34,29 @@ const App = React.createClass({
 		);
 	},
 
-	home: function () {
+	dashboard: () => {
 		return (
-			<div className="container">
-				home
-			</div>
+			<Dashboard/>
 		);
 	},
 
-	control: function () {
+	control: () => {
 		return (
-			<div className="container">
-				<div className="row">
-					<Light id="1" name="Living Room"/>
-					<Light id="2" name="Kitchen"/>
-					<Chart room="42" name="Living Room"/>
-					<Chart room="43" name="Kitchen"/>
-					{/*<Map/>*/}
-				</div>
-			</div>
+			<Control/>
 		);
 	},
 
-	settings: function () {
+	rooms: () => {
+		return (
+			<Rooms/>
+		);
+	},
+
+	scenes: () => {
+		return <Scenes/>;
+	},
+
+	settings: () => {
 		return (
 			<Settings/>
 		);

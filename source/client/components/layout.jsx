@@ -13,16 +13,18 @@ export default class Layout extends React.Component {
 			 				<span className="icon-bar"></span>
 			 				<span className="icon-bar"></span>
 			 			</button>
-			 			<a className="navbar-brand" onClick={this.home}>
-			 				Home
+			 			<a className="navbar-brand" onClick={this.go.bind(this, '/')}>
+			 				<i className="glyphicon glyphicon-home"/> Home
 			 			</a>
 					</div>
 			 		<div className="collapse navbar-collapse">
 			 			<ul className="nav navbar-nav">
-			 				<li><a onClick={this.control}><i className="glyphicon glyphicon-screenshot"/> Control</a></li>
+			 				<li><a onClick={this.go.bind(this, '/control')}><i className="glyphicon glyphicon-console"/> Control</a></li>
+			 				<li><a onClick={this.go.bind(this, '/scenes')}><i className="glyphicon glyphicon-picture"/> Scenes</a></li>
+			 				<li><a onClick={this.go.bind(this, '/rooms')}><i className="glyphicon glyphicon-stop"/> Rooms</a></li>
 			 			</ul>
 			 			<ul className="nav navbar-nav navbar-right">
-			 				<li><a onClick={this.settings}><i className="glyphicon glyphicon-compressed"></i> Settings</a></li>
+			 				<li><a onClick={this.go.bind(this, '/settings')}><i className="glyphicon glyphicon-compressed"></i> Settings</a></li>
 			 			</ul>
 			 		</div>
 			 	</div>
@@ -30,15 +32,7 @@ export default class Layout extends React.Component {
 		);
 	}
 
-	home () {
-		navigate('/');
-	}
-
-	control () {
-		navigate('/control');
-	}
-
-	settings () {
-		navigate('/settings');
+	go (where) {
+		navigate(where);
 	}
 }

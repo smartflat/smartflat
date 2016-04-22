@@ -3,7 +3,8 @@ import React from 'react';
 
 import store from '../stores/devices';
 
-export default class Chart extends React.Component {
+export class ChartComponent extends React.Component {
+
 	constructor () {
 		super();
 
@@ -19,7 +20,18 @@ export default class Chart extends React.Component {
 	}
 
 	_onChange (data) {
-		this.setState(store.getState());
+		let lastUpdate = this.state.lastUpdate;
+		let newState = store.getState();
+
+		let needsUpdate = false;
+
+		for (let i in newState.rooms[this.props.room]) {
+			if (newState.rooms[this.props.room][i].lastUpdate > lastUpdate) needsUpdate = true;
+		}
+
+		if (needsUpdate) {
+			this.setState(newState);
+		}
 	}
 
 	componentWillUnmount () {
@@ -27,6 +39,8 @@ export default class Chart extends React.Component {
 	}
 
 	render () {
+
+		this.state.lastUpdate = Date.now();
 
 		// determine sensors to render
 
@@ -51,6 +65,9 @@ export default class Chart extends React.Component {
 				chart={{
 					interaction: {
 						enabled: false
+					},
+					point: {
+						show: false
 					}
 				}}
 				maxValues={60}
@@ -65,19 +82,34 @@ export default class Chart extends React.Component {
 		) : '';
 
 		return (
+			<div className={this.props.className}>
+				<div className={'alert alert-' + (motion === 1 ? 'danger' : 'success')}>
+					Motion {motion === 1 ? 'detected' : 'not detected'}
+				</div>
+				{chart}
+			</div>
+		);
+	}
+
+}
+
+export default class Chart extends React.Component {
+
+	constructor () {
+		super();
+	}
+
+	render () {
+		return (
 			<div className="col-md-6 col-xs-12">
 				<div className="panel panel-default">
 					<div className="panel-heading">
-						{this.props.name} Sensors
+						{this.props.name}
 					</div>
-					<div className="panel-body">
-						<div className={'alert alert-' + (motion === 1 ? 'danger' : 'success')}>
-							Motion {motion === 1 ? 'detected' : 'not detected'}
-						</div>
-						{chart}
-					</div>
+					<ChartComponent name={this.props.name} room={this.props.room} className="panel-body"/>
 				</div>
 			</div>
 		);
 	}
+
 }

@@ -25,6 +25,18 @@ export default class Settings extends React.Component {
 							</div>
 						</div>
 					</div>
+					<div className="col-sm-6">
+						<div className="panel panel-default">
+							<div className="panel-heading">
+								Add Devices
+							</div>
+							<div className="panel-body">
+								<div className="btn-group">
+									<button className="btn btn-success"><i className="glyphicon glyphicon-plus"/> Light</button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		);

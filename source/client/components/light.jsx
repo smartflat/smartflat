@@ -2,7 +2,7 @@ import React from 'react';
 
 import store from '../stores/devices';
 
-export default class Light extends React.Component {
+export class LightComponent extends React.Component {
 	constructor () {
 		super();
 		this.state = store.getState();
@@ -45,32 +45,25 @@ export default class Light extends React.Component {
 		}];
 		let colors = [];
 
-		colorList.forEach((color) => {
+		colorList.forEach((color, index) => {
 			let classes = 'btn btn-' + (color.className ? color.className : 'default')
 			let styles = color.className ? {} : {
 				backgroundColor: color.color
 			};
 			colors.push(
-				<button ref={color.name} className={classes} style={styles} onFocus={this.blur.bind(this, color.name)} onClick={this.color.bind(this, color.name)}>
+				<button key={index} ref={color.name} className={classes} style={styles} onFocus={this.blur.bind(this, color.name)} onClick={this.color.bind(this, color.name)}>
 					&nbsp;
 				</button>
 			);
 		});
 
 		return (
-			<div className="col-xs-6">
-				<div className="panel panel-default">
-					<div className="panel-heading">
-						{this.props.name} Light
-					</div>
-					<div className="panel-body">
-						<div className="btn-group" data-toggle="buttons">
-							<button ref="toggle" className={'btn btn-' + className} onFocus={this.blur.bind(this, 'toggle')} onClick={this.toggle.bind(this)}>
-								{label}
-							</button>
-							{colors}
-						</div>
-					</div>
+			<div className={this.props.className}>
+				<div className="btn-group" data-toggle="buttons">
+					<button ref="toggle" className={'btn btn-' + className} onFocus={this.blur.bind(this, 'toggle')} onClick={this.toggle.bind(this)}>
+						{label}
+					</button>
+					{colors}
 				</div>
 			</div>
 		);
@@ -93,4 +86,25 @@ export default class Light extends React.Component {
 			id: this.props.id
 		});
 	}
+}
+
+export default class Light extends React.Component {
+
+	constructor () {
+		super();
+	}
+
+	render () {
+		return (
+			<div className="col-md-6 col-xs-12">
+				<div className="panel panel-default">
+					<div className="panel-heading">
+						{this.props.name}
+					</div>
+					<LightComponent name={this.props.name} id={this.props.id} className="panel-body"/>
+				</div>
+			</div>
+		);
+	}
+
 }
