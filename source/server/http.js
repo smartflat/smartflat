@@ -2,7 +2,6 @@ const router = require('koa-router')();
 const serve = require('koa-static')('build/client');
 
 const gpio = require('./gpio');
-const hue = require('./hue');
 const maker = require('./maker');
 const wake = require('./wake-on-lan');
 const daemon = require('./daemon');
@@ -13,6 +12,8 @@ const espeak = require('./espeak');
 const _433 = require('./433');
 
 const credentials = require('../../credentials.json');
+
+import {hue} from './index';
 
 let _state = {};
 

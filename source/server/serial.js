@@ -83,7 +83,6 @@ DEVICES.forEach((device) => {
 				try {
 					content = JSON.parse(lines[i]);
 					deviceState.data[content.id] = content;
-					console.log(lines[i]);
 				} catch (error) {
 					console.log(`serial error can't parse JSON: ${lines[i]}`);
 				}

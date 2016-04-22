@@ -1,7 +1,10 @@
 const io = require('socket.io')();
-const hue = require('./hue');
 const config = require('./config');
 const credentials = require('../../credentials.json');
+
+import {hue} from './index';
+
+import scene from './scene';
 
 export default io;
 
@@ -42,11 +45,10 @@ const allow = (socket) => {
 
 	// send initial data
 
-	let hueState = hue.getState();
-	Object.keys(hueState).forEach((id) => {
+	Object.keys(hue.state).forEach((id) => {
 		socket.emit('update:light', {
 			id: id,
-			state: hueState[id]
+			state: hue.state[id]
 		})
 	});
 
