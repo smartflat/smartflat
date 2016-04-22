@@ -36,6 +36,16 @@ export default class Chart extends React.Component {
 
 		// don't render chart without data
 
+		const getData = (type) => {
+			return this.state.rooms[this.props.room][type] ? this.state.rooms[this.props.room][type].value : 0;
+		}
+
+		let temperature = getData('temperature');
+		let motion = getData('motion');
+		let brightness = getData('brightness');
+		let humidity = getData('humidity');
+
+
 		let chart = fields.length ? (
 			<RTChart
 				chart={{
@@ -45,14 +55,15 @@ export default class Chart extends React.Component {
 				}}
 				maxValues={60}
 				data={Object.assign({
-					temperature: this.state.rooms[this.props.room].temperature,
-					humidity: this.state.rooms[this.props.room].humidity,
-					brightness: this.state.rooms[this.props.room].brightness/2.55,
+					temperature: temperature,
+					humidity: humidity,
+					brightness: brightness,
 					date: new Date()
 				})}
 				fields={fields}
 			/>
 		) : '';
+
 		return (
 			<div className="col-md-6 col-xs-12">
 				<div className="panel panel-default">
@@ -60,8 +71,8 @@ export default class Chart extends React.Component {
 						{this.props.name} Sensors
 					</div>
 					<div className="panel-body">
-						<div className={'alert alert-' + (this.state.rooms[this.props.room].motion === 1 ? 'danger' : 'success')}>
-							Motion {this.state.rooms[this.props.room].motion === 1 ? 'detected' : 'not detected'}
+						<div className={'alert alert-' + (motion === 1 ? 'danger' : 'success')}>
+							Motion {motion === 1 ? 'detected' : 'not detected'}
 						</div>
 						{chart}
 					</div>

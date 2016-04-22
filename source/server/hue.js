@@ -60,7 +60,8 @@ export function color (id, value) {
 	const matcher = {
 		'white': [0, 0],
 		'red': [0, 255],
-		'blue': [45000, 255]
+		'blue': [45000, 255],
+		'yellow': [10000, 255]
 	};
 
 	let hue = matcher[value][0];

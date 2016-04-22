@@ -52,25 +52,21 @@ const allow = (socket) => {
 
 	// register events
 
-	socket.on('light:toggle', function (options) {
+	socket.on('light:toggle', (options) => {
 		console.log(`${socket.id} light ${options.id} toggled`);
 		hue.toggle(options.id);
 	});
 
-	socket.on('light:on', function (options) {
+	socket.on('light:on', (options) => {
 		console.log(`${socket.id} light ${options.id} turned on`);
 		hue.on(options.id);
 	});
-	socket.on('light:off', function (options) {
+	socket.on('light:off', (options) => {
 		console.log(`${socket.id} light ${options.id} turned off`);
 		hue.off(options.id);
 	});
-	// socket.on('light:set', function (options) {
-	// 	console.log(`${socket.id} light ${options.id} set to (${options.hue}, ${options.saturation}, ${options.brightness})`);
-	// 	hueLegacy.light(options.id).setState({
-	// 		hue: options.hue,
-	// 		sat: options.saturation,
-	// 		bri: options.brightness
-	// 	})
-	// });
+	socket.on('light:color', (options) => {
+		console.log(`${socket.id} light ${options.id} set to ${options.color}`);
+		hue.color(options.id, options.color);
+	});
 }

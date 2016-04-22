@@ -5,6 +5,7 @@ const gpio = require('./gpio');
 const hue = require('./hue');
 const maker = require('./maker');
 const wake = require('./wake-on-lan');
+const daemon = require('./daemon');
 const dht22 = require('./dht22');
 const pir = require('./pir');
 const espeak = require('./espeak');
@@ -115,6 +116,9 @@ router.get('/hook/' + credentials.hookSecret + '/:type/:id/:action', function * 
 					switch (action) {
 						case 'wake':
 							wake.workstation();
+						break;
+						case 'sleep':
+							daemon.workstation('power/standby');
 						break;
 					}
 				break;

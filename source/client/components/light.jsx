@@ -25,6 +25,38 @@ export default class Light extends React.Component {
 	render () {
 		let className = this.state.lights[this.props.id].on ? 'success' : 'danger';
 		let label = this.state.lights[this.props.id].on ? 'On' : 'Off';
+
+		let colorList = [{
+			name: 'white',
+			color: '#FFFFFF',
+			className: 'default'
+		}, {
+			name: 'yellow',
+			color: '#FFDC00',
+			className: 'warning'
+		}, {
+			name: 'red',
+			color: '#FF4136',
+			className: 'danger'
+		}, {
+			name: 'blue',
+			color: '#0074D9',
+			className: 'primary'
+		}];
+		let colors = [];
+
+		colorList.forEach((color) => {
+			let classes = 'btn btn-' + (color.className ? color.className : 'default')
+			let styles = color.className ? {} : {
+				backgroundColor: color.color
+			};
+			colors.push(
+				<button ref={color.name} className={classes} style={styles} onFocus={this.blur.bind(this, color.name)} onClick={this.color.bind(this, color.name)}>
+					&nbsp;
+				</button>
+			);
+		});
+
 		return (
 			<div className="col-xs-6">
 				<div className="panel panel-default">
@@ -36,12 +68,7 @@ export default class Light extends React.Component {
 							<button ref="toggle" className={'btn btn-' + className} onFocus={this.blur.bind(this, 'toggle')} onClick={this.toggle.bind(this)}>
 								{label}
 							</button>
-							<button ref="white" className="btn btn-default" style={{backgroundColor: 'white'}} onFocus={this.blur.bind(this, 'white')} onClick={this.white.bind(this)}>
-								&nbsp;
-							</button>
-							<button ref="yellow" className="btn btn-default" style={{backgroundColor: 'yellow'}} onFocus={this.blur.bind(this, 'yellow')} onClick={this.yellow.bind(this)}>
-								&nbsp;
-							</button>
+							{colors}
 						</div>
 					</div>
 				</div>
@@ -53,23 +80,11 @@ export default class Light extends React.Component {
 		this.refs[name].blur();
 	}
 
-	white () {
+	color (name) {
 		let id = this.props.id;
-		window.socket.emit('light:set', {
+		window.socket.emit('light:color', {
 			id: id,
-			hue: 0,
-			saturation: 0,
-			brightness: 255
-		});
-	}
-
-	yellow () {
-		let id = this.props.id;
-		window.socket.emit('light:set', {
-			id: id,
-			hue: 10000,
-			saturation: 100,
-			brightness: 255
+			color: name
 		});
 	}
 

@@ -44,7 +44,10 @@ store.dispatchToken = dispatcher.register(action => {
 
 		case constants.UPDATE_SENSORS:
 			action.data.forEach((sensor) => {
-				_state.rooms[sensor.room][sensor.type] = sensor.value;
+				_state.rooms[sensor.room][sensor.type] = {
+					value: sensor.value,
+					lastUpdate: Date.now()
+				};
 			});
 		break;
 	}

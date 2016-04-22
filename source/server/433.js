@@ -8,10 +8,10 @@ const _state = {
 	powered: false
 };
 
-var sniffer = lib.sniffer(RECEIVE_PIN, 500);
-sniffer.on('codes', function (code) {
-	console.log('Code received: ' + code);
-});
+// var sniffer = lib.sniffer(RECEIVE_PIN, 500);
+// sniffer.on('codes', function (code) {
+// 	console.log('Code received: ' + code);
+// });
 
 export function power (value) {
 	_state.powered = value;
