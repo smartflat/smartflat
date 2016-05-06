@@ -6,7 +6,7 @@ export default class FindMyIPhone {
 
 	constructor (options) {
 		this.lib = fmi;
-		this.lib.apple_id = options.id;	
+		this.lib.apple_id = options.id;
 		this.lib.password = options.password;
 	}
 

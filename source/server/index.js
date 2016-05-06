@@ -65,5 +65,5 @@ export const _433Sender = new Sender({
 });
 
 export const maker = new Maker({
-	token: credentials.maker.token
+	token: config.services.maker.notification.token
 });
