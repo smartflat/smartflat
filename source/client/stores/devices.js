@@ -8,8 +8,12 @@ import actions from '../actions/devices.js';
 
 let _state = {
 	lights: {
-		1: {},
-		2: {}
+		kitchen: {},
+		'living-room': {},
+		'blue': {},
+		'red': {},
+		'yellow': {},
+		'green': {}
 	},
 	rooms: {
 		42: {},
@@ -34,12 +38,19 @@ store.dispatchToken = dispatcher.register(action => {
 
 	switch (action.type) {
 		case constants.INITIALIZE:
+			window.socket.on('initial-data', actions.initialData);
 			window.socket.on('update:sensors', actions.updateSensors);
 			window.socket.on('update:light', actions.updateLight);
 		break;
 
+		case constants.INITIAL_DATA:
+			action.data.lights.forEach((light) => {
+				_state.lights[light.id] = light;
+			});
+		break;
+
 		case constants.UPDATE_LIGHT:
-			_state.lights[action.data.id] = action.data.state;
+			_state.lights[action.data.id] = action.data;
 		break;
 
 		case constants.UPDATE_SENSORS:

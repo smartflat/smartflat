@@ -12,6 +12,13 @@ class Actions {
 		});
 	}
 
+	initialData (data) {
+		d.dispatch({
+			type: c.INITIAL_DATA,
+			data: data
+		});
+	}
+
 	updateLight (data) {
 		d.dispatch({
 			type: c.UPDATE_LIGHT,

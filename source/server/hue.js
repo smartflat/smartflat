@@ -1,26 +1,11 @@
-const PhilipsHue = require('philips-hue');
+import PhilipsHue from 'philips-hue';
 
-const io = require('./socket');
+import {find as findDevice} from './devices';
+import Device from './device';
 
-export default class Hue {
+class Hue {
 
 	constructor (options) {
-
-		// setup bridge
-
-		this.lib = new PhilipsHue();
-
-		this.lib.bridge = options.host;
-		this.lib.username = options.token;
-
-		// setup state
-
-		this.state = {};
-
-		// get state from bridge
-
-		let stateReference = this.state;
-
 		this.lib.getLights().then(function (lights) {
 			Object.keys(lights).forEach((item) => {
 				let light = lights[item];
@@ -35,18 +20,6 @@ export default class Hue {
 				};
 			});
 		});
-	}
-
-	toggle (id) {
-		this.state[id].on ^= 1;
-		this.applyOn(id);
-	}
-
-	set (id, on) {
-		if (this.state[id] !== on) {
-			this.state[id].on = on;
-			this.applyOn(id);
-		}
 	}
 
 	rainbow (id) {
@@ -82,28 +55,58 @@ export default class Hue {
 		});
 	}
 
-	// bulk
+}
 
-	all (on, colorValue) {
-		Object.keys(this.state).forEach((id) => {
-			this.state[id].on = on;
-			this.applyOn(id);
-			if (colorValue) this.color(id, colorValue);
+export class Bridge extends Device {
+
+	constructor (options) {
+		super();
+		this.hue = new PhilipsHue();
+		this.hue.bridge = options.host;
+		this.hue.username = options.token;
+		this.update();
+	}
+
+	update () {
+		let that = this;
+		this.hue.getLights().then((lights) => {
+			Object.keys(lights).forEach((id) => {
+				let light = lights[id];
+				that.emit(id, light.state.on);
+			});
 		});
 	}
 
-	// apply state
-
-	applyOn (id) {
-		io.update('light', {
-			id: id,
-			state: this.state[id]
-		});
-		if (this.state[id].on) {
-			this.lib.light(id).on();
+	set (id, isOn) {
+		if (isOn) {
+			this.hue.light(id).on();
 		} else {
-			this.lib.light(id).off();
+			this.hue.light(id).off();
 		}
+	}
+
+}
+
+import Light from './light';
+
+export class HueLight extends Light {
+
+	constructor (options) {
+		super(options);
+		this.bridge = options.bridge;
+		this.light = options.light;
+
+		this.hue = findDevice(this.bridge, 'hue');
+
+		let that = this;
+
+		this.hue.on(options.light, (isOn) => {
+			that.isOn = !!isOn;
+		});
+	}
+
+	apply () {
+		this.hue.set(this.light, this.isOn);
 	}
 
 }

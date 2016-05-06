@@ -45,6 +45,9 @@ export class ChartComponent extends React.Component {
 		// determine sensors to render
 
 		let fields = Object.keys(this.state.rooms[this.props.room]);
+
+		// remove boolean sensors for chart
+
 		let index = fields.indexOf('motion');
 		if (index) fields.splice(index, 1);
 
@@ -68,15 +71,18 @@ export class ChartComponent extends React.Component {
 					},
 					point: {
 						show: false
+					},
+					data: {
+						type: 'spline'
 					}
 				}}
 				maxValues={60}
-				data={Object.assign({
+				data={{
 					temperature: temperature,
 					humidity: humidity,
 					brightness: brightness,
-					date: new Date()
-				})}
+					date: this.state.lastUpdate
+				}}
 				fields={fields}
 			/>
 		) : '';

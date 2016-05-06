@@ -5,7 +5,7 @@ const app    = require('koa')();
 const http   = require('./http');
 const server = require('http').Server(app.callback());
 
-const port = '50000';
+const port = 50000;
 
 app
 	.use(http.router.routes())

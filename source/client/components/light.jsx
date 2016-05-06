@@ -23,8 +23,8 @@ export class LightComponent extends React.Component {
 	}
 
 	render () {
-		let className = this.state.lights[this.props.id].on ? 'success' : 'danger';
-		let label = this.state.lights[this.props.id].on ? 'On' : 'Off';
+		let className = this.state.lights[this.props.id].isOn ? 'success' : 'danger';
+		let label = this.state.lights[this.props.id].isOn ? 'On' : 'Off';
 
 		let colorList = [{
 			name: 'white',

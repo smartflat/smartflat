@@ -1,59 +1,59 @@
-var lib = require('rpi-433');
-var espeak = require('./espeak');
+import lib from 'rpi-433';
 
-const RECEIVE_PIN = 2;
-const SEND_PIN = 6;
+import {EventEmitter} from 'events';
 
-const _state = {
-	powered: false
-};
+export class Sender {
 
-// var sniffer = lib.sniffer(RECEIVE_PIN, 500);
-// sniffer.on('codes', function (code) {
-// 	console.log('Code received: ' + code);
-// });
-
-export function power (value) {
-	_state.powered = value;
-	applyPower();
-}
-
-export function getState () {
-	return _state;
-}
-
-export function toggle () {
-	_state.powered ^= true;
-	applyPower();
-}
-
-export function speak (message) {
-	_state.powered = true;
-	applyPower(function () {
-		espeak.speak(message, function () {
-			power(false);
-		});
-	});
-}
-
-let timer;
-function applyPower (callback) {
-	clearTimeout(timer);
-	let code = _state.powered ? 4261201 : 4261204;
-	let attempts = 0;
-
-	function send () {
-		if (attempts++ < 10) {
-			console.info(433, 'sending ' + code);
-			lib.sendCode(code, SEND_PIN);
-			timer = setTimeout(send, 500);
-		} else {
-			callback && callback();
-		}
+	constructor (options) {
+		this.pin = options.pin;
+		this.attempts = options.attempts || 10;
+		this.timer;
 	}
 
-	send();
+	send (code, callback) {
+		clearTimeout(this.timer);
+
+		// send multiple times
+
+		let attempts = 0;
+
+		let ref = this;
+
+		function send () {
+			if (attempts++ < ref.attempts) {
+				console.info(`433 sending ${code}`);
+				lib.sendCode(code, ref.pin);
+				ref.timer = setTimeout(send, 500);
+			} else {
+				callback(null, 'finished sending');
+			}
+		}
+
+		send();
+	}
+
 }
 
-// initialize
-applyPower();
+export class Receiver extends EventEmitter {
+
+	constructor (options) {
+		super();
+
+		// settings
+		this.id = options.id;
+		this.pin = options.pin;
+		this.debounce = options.debounce;
+
+		// create
+		this.sniffer = lib.sniffer(this.pin, this.debounce);
+
+		// listen
+		this.sniffer.on('codes', this.update.bind(this));
+	}
+
+	update (code) {
+		console.log(`433 ${this.id} received: ${code}`);
+		this.emit('data', code);
+	}
+
+}

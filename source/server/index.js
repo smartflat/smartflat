@@ -1,40 +1,69 @@
-require('babel-core/register');
-require('babel-polyfill');
+// reset
 
-// configuration
+console.log("\x1Bc");
 
-const credentials = require('../../credentials.json');
+// external imports
 
-// legacy imports
+import http from 'http';
+import koa from 'koa';
+import koaRouter from 'koa-router';
+import serveStatic from 'koa-static';
+import {} from 'babel-polyfill';
 
-const app    = require('koa')();
-const http   = require('./http');
-const gpio   = require('./gpio');
-const server = require('http').Server(app.callback());
-const socket = require('./socket').init(server);
-const maker  = require('./maker');
-const dht22  = require('./dht22');
-const pir    = require('./pir');
-const config = require('./config');
-const _433   = require('./433');
-const serial = require('./serial');
+// export config
 
-// imports
+export const config = require('../../config.json');
+export const credentials = require('../../credentials.json');
+
+// internal imports
 
 import Hue from './hue';
+import Maker from './maker';
+import {Sender} from './433';
+import {initialize as initializeDevices} from './devices';
+import {initialize as initializeLights} from './lights';
+import {initialize as initializeScenes} from './scenes';
+import {initialize as initializeSensor} from './sensor';
+import {initialize as initializeSocket} from './socket';
+import {initialize as initializeHomeKit} from './homekit';
+
+// execute routes
+
+export const router = koaRouter();
+require('./routes');
 
 // setup http
 
+const app = koa();
+
 app
-	.use(http.serve)
-	.use(http.router.routes())
-	.use(http.router.allowedMethods())
+	.use(serveStatic('build/client'))
+	.use(router.routes())
+	.use(router.allowedMethods())
 ;
+
+const server = http.Server(app.callback());
 
 server.listen(config.port, function () {
 	console.log('listening on http://127.0.0.1:' + config.port)
 });
 
-// export initialized modules
+// initialize
 
-export let hue = new Hue(credentials.hue);
+initializeDevices(config.devices);
+initializeLights(config.lights);
+initializeScenes(config.scenes);
+initializeSensor(config.sensors);
+initializeSocket(server);
+initializeHomeKit();
+
+// export instances
+
+export const _433Sender = new Sender({
+	pin: 6,
+	attempts: 10
+});
+
+export const maker = new Maker({
+	token: credentials.maker.token
+});

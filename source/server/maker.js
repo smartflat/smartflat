@@ -1,14 +1,18 @@
-import Maker from 'maker-ifttt';
+import IFTTT from 'maker-ifttt';
 
-const credentials = require('../../credentials.json');
+export default class Maker {
 
-const trigger = new Maker(credentials.maker.token);
+	constructor (options) {
+		this.ifttt = new IFTTT(options.token);
+	}
 
-export function notify (message) {
-	trigger.triggerEvent('notify', message, function (res) {
-		console.log('notify', message);
-		res.on('data', function (chunk) {
-			console.log('Response: ' + chunk);
+	notify (message) {
+		this.ifttt.triggerEvent('notify', message, function (res) {
+			console.log('notify', message);
+			res.on('data', function (chunk) {
+				console.log('Response: ' + chunk);
+			});
 		});
-	});
+	}
+
 }
