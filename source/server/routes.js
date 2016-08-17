@@ -135,3 +135,40 @@ router.get(`/hook/${config.web.hookSecret}/lights/:action`, function * (next) {
 
 	yield next;
 });
+
+// damn, this codebase is getting really messy
+
+import crypto from 'crypto';
+import FritzBoxAPI from 'fritz-box';
+
+const box = new FritzBoxAPI({
+	username: 'home',
+	password: '',
+	host: '192.168.0.1'
+});
+
+async function activateGuestWLAN ({password}) {
+	try {
+		const sid = await box.getSession();
+		console.log('SID', sid);
+		const settings = await box.getGuestWLAN();
+		console.log('settings', settings);
+		settings.key = password;
+		settings.active = true;
+		await box.setGuestWLAN(settings);
+	} catch (error) {
+		console.log(error.response.request.header);
+	}
+}
+
+router.get(`/hook/${config.web.hookSecret}/wlan`, function * (next) {
+
+	const password = crypto.randomBytes(4).toString('hex');
+
+	console.log(`guest WLAN ${password}`);
+
+	this.body = `${password}`;
+	activateGuestWLAN({password});
+
+	yield next;
+});

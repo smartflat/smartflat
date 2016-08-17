@@ -1,4 +1,5 @@
 import {find as findDevice} from './devices';
+import {EventEmitter} from 'events';
 
 const sensors = {};
 
@@ -8,6 +9,10 @@ export function find (id) {
 	} else {
 		return false;
 	}
+}
+
+export function getAll () {
+	return sensors;
 }
 
 export function initialize (sensorList) {
@@ -25,9 +30,11 @@ export function initialize (sensorList) {
 	}
 }
 
-export default class Sensor {
+export default class Sensor extends EventEmitter{
 
 	constructor (options) {
+		super();
+
 		this.id = options.id;
 		this.data = false;
 		this.type = options.type;
@@ -50,7 +57,10 @@ export default class Sensor {
 	}
 
 	update (data) {
-		this.data = data;
+		if (data !== this.data) {
+			this.data = data;
+			this.emit('update', data);
+		}
 	}
 
 	getStatus () {

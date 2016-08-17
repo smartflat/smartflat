@@ -1,0 +1,7 @@
+apps:
+  - script: '../build/daemon/'
+    watch: true
+    name: 'smartflat-daemon'
+  - script: ../build/server/
+    watch: true
+    name: 'smartflat-server'

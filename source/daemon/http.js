@@ -1,12 +1,12 @@
 const router = require('koa-router')();
 
-const credentials = require('../../credentials.json');
+const config = require('../../config.json');
 
 import {exec} from 'child_process';
 
 let _state = {};
 
-router.get('/hook/' + credentials.hookSecret + '/:type/:id', function * (next) {
+router.get('/hook/' + config.web.hookSecret + '/:type/:id', function * (next) {
 	let type = this.params.type;
 	let id = this.params.id;
 
