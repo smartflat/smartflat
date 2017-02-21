@@ -1,20 +1,42 @@
+// region define
+
+// DIGITAL
+#define PIR_PIN 3
+#define DHT_PIN 4
+#define LED_0 5
+#define LED_1 6
+#define LED_2 7
+#define LED_3 8
+#define LED_4 9
+#define LED_5 10
+#define LED_6 11
+#define LED_7 12
+#define LEFT_PIN 13
+
+// ANALOG
+#define I2C_1 4
+#define I2C_2 5
+#define BRIGHTNESS 7
+
+// endregion
+
+// region include
+
 #include <Arduino.h>
 #include <DHT.h>
 
-#define DHT_PIN 4
-#define DHT_TYPE DHT22
-DHT dht(DHT_PIN, DHT_TYPE);
+DHT dht(DHT_PIN, DHT22);
 
-int ledPins[] = {5, 6, 7, 8, 9, 10, 11, 12};
+int ledPins[] = {LED_0, LED_1, LED_2, LED_3, LED_4, LED_5, LED_6, LED_7};
 
-void setup() {
+void setup () {
 	pinMode(13, INPUT);
 	for (int i = 0; i < 8; i++) {
 		pinMode(ledPins[i],OUTPUT);
 	}
 }
 
-void showBinNumber(int num) {
+void showBinNumber (int num) {
 	for (int i = 0; i < 8; i++) {
 		if (num%2)
 			digitalWrite(ledPins[i], HIGH);
@@ -24,15 +46,26 @@ void showBinNumber(int num) {
 	}
 }
 
-void loop() {
-	if (digitalRead(13) == HIGH) {
-		for (int i=0; i<256; i++) {
-			showBinNumber(i);
-			delay(256-i);
-		}
-	} else {
-		delay(2000);
+void loop () {
+	for (int i = 0; i < 10; i++) {
+		showBinNumber(
+			map(
+				analogRead(BRIGHTNESS),
+				0,
+				1024,
+				0,
+				255
+			)
+		);
+		delay(256-i);
+	}
+	for (int i = 0; i < 256; i++) {
+		showBinNumber(i);
+		delay(256-i);
+	}
+	for (int i = 0; i < 5; i++) {
 		float humidity = dht.readHumidity();
 		showBinNumber((int) humidity*2.56);
+		delay(2000);
 	}
 }
