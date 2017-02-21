@@ -6,7 +6,7 @@ Devices are just extensions.
 
 [![slack](https://slack.smartfl.at/badge.svg)](https://slack.smartfl.at)
 
-![SmartFlat Logo](https://raw.githubusercontent.com/smartflat/smartflat/master/source/images/logo.png)
+<img src="https://raw.githubusercontent.com/smartflat/smartflat/master/source/images/logo.png" alt="SmartFlat Logo" height="128" width="128">
 
 ## Features
 
