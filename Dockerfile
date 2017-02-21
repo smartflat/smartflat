@@ -29,4 +29,4 @@ EXPOSE 8080
 
 # run
 
-CMD ["yarn", "run", "start"]
+CMD ["node", "build/server"]
