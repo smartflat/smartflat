@@ -6,6 +6,8 @@ Devices are just extensions.
 
 [![slack](https://slack.smartfl.at/badge.svg)](https://slack.smartfl.at)
 
+![SmartFlat Logo](/logo.svg =256x256)
+
 ## Features
 
 - HomeKit compatible
@@ -18,3 +20,17 @@ Devices are just extensions.
 ## Extensions
 
 - [WebHook](https://github.com/smartflat/smartflat-webhooks)
+
+## For Developers
+
+Requires: git, [yarn](https://yarnpkg.com) and [node.js](https://nodejs.org).
+
+```sh
+git clone https://github.com/smartflat/smartflat
+yarn install
+yarn run build
+```
+
+## License
+
+SmartFlat is released under [the MIT license](/license.md).
