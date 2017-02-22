@@ -33,9 +33,9 @@ Devices are extensions. SmartFlat can potentially support anything.
 	- Get a third-party WebUI
 	- Own a custom device? Write your own module
 
-## Extensions
+## Installation
 
-- [WebHook](https://github.com/smartflat/smartflat-webhooks)
+Ask me on Slack.
 
 ## For Developers
 

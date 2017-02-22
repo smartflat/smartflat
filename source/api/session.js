@@ -28,7 +28,7 @@ export const verify = async (token) =>
 		algorithms: ['HS256']
 	})
 
-export const signIn = async ({name, password}) => {
+export const create = async ({name, password}) => {
 	const {salt, hash} = await provide.user({name})
 	const realHash = await hashPassword({password, salt})
 
