@@ -2,7 +2,7 @@
 
 > Modular real-time home automation server.
 
-Devices are just extensions.
+Devices are extensions. SmartFlat can potentially support anything.
 
 [![Slack](https://slack.smartfl.at/badge.svg)](https://slack.smartfl.at)
 [![Docker](https://img.shields.io/docker/pulls/smartflat/smartflat.svg)](https://hub.docker.com/r/smartflat/smartflat)
@@ -11,16 +11,27 @@ Devices are just extensions.
 
 ## Features
 
-- HomeKit compatible
-- WebHooks
-- RaspberryPi GPIO
-- Arduino I²C & Serial
+- Highly Compatible:
+	- [HomeKit](https://github.com/smartflat/smartflat-homekit)
+	- [WebHooks](https://github.com/smartflat/smartflat-webhooks)
+	- [RaspberryPi GPIO](https://github.com/smartflat/raspberry-pi)
+	- [Arduino I²C & Serial](https://github.com/smartflat/smartflat-arduino)
+- Modular
+	- Everything is a module
+	- Easy to extend
+	- Flexible
 - Real-time
 - Scriptable
-
-### Modular
-
-
+- Secure:
+	- SSL for communication
+	- PBKDF2 for hashing
+	- JWT for tokens
+	- [OpenSource](/license.md)
+	- Self-hosted
+- Customizable
+	- Choose whatever database you want
+	- Get a third-party WebUI
+	- Own a custom device? Write your own module for it
 
 ## Extensions
 
@@ -38,4 +49,4 @@ yarn run build
 
 ## License
 
-SmartFlat is released under [the MIT license](/license.md).
+SmartFlat is [MIT-licensed](/license.md).
