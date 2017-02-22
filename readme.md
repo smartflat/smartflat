@@ -18,6 +18,10 @@ Devices are just extensions.
 - Real-time
 - Scriptable
 
+### Modular
+
+
+
 ## Extensions
 
 - [WebHook](https://github.com/smartflat/smartflat-webhooks)

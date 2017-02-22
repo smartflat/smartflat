@@ -6,12 +6,13 @@ import spirit from 'spirit'
 
 // internal
 
-import config from './config'
 import * as httpError from './utilities/http-error.js'
+import config from './config'
+import modules from './utilities/modules'
 
 // routes
 
-import {html, js} from './routes/client'
+import {images, robots} from './routes/static'
 
 // endregion
 
@@ -25,11 +26,19 @@ const {host, port} = config.listen
 
 const app = route.define([
 	// client
-	route.get('/', html),
-	route.get('/bundle.js', js),
+	route.get('/', {
+		status: 307,
+		body: `<a href="${config.routes.default}">Redirect</a>`,
+		headers: {
+			Location: config.routes.default
+		}
+	}),
+
+	// modules
+	...modules(),
 
 	// other
-	route.get('/robots.txt', () => ''),
+	route.get('/robots.txt', robots),
 	route.get('/favicon.ico', () => ''),
 	route.any('*', httpError.notFound)
 ])
