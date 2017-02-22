@@ -7,7 +7,7 @@ Devices are extensions. SmartFlat can potentially support anything.
 [![Slack](https://slack.smartfl.at/badge.svg)](https://slack.smartfl.at)
 [![Docker](https://img.shields.io/docker/pulls/smartflat/smartflat.svg)](https://hub.docker.com/r/smartflat/smartflat)
 
-<img src="https://raw.githubusercontent.com/smartflat/smartflat/master/source/images/logo.png" alt="SmartFlat Logo" height="128" width="128">
+<img src="https://raw.githubusercontent.com/smartflat/smartflat-web-ui/master/source/images/logo.png" alt="SmartFlat Logo" height="128" width="128">
 
 ## Features
 
@@ -25,13 +25,13 @@ Devices are extensions. SmartFlat can potentially support anything.
 - Secure:
 	- SSL for communication
 	- PBKDF2 for hashing
-	- JWT for tokens
+	- JWT for authentication
 	- [OpenSource](/license.md)
 	- Self-hosted
 - Customizable
 	- Choose whatever database you want
 	- Get a third-party WebUI
-	- Own a custom device? Write your own module for it
+	- Own a custom device? Write your own module
 
 ## Extensions
 
