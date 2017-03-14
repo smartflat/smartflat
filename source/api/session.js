@@ -13,9 +13,9 @@ import {provide} from '../utilities/modules'
 
 const key = 'secret'
 const hashPassword = async ({password, salt}) => new Promise((resolve, reject) =>
-	crypto.pbkdf2(key, salt, 64000, 512, 'sha512', (error, key) => error
+	crypto.pbkdf2(password, salt, 64000, 512, 'sha512', (error, hash) => error
 		? reject(error)
-		: resolve(key.toString('base64'))
+		: resolve(hash.toString('base64'))
 	)
 )
 
@@ -32,11 +32,12 @@ export const create = async ({name, password}) => {
 	const {salt, hash} = await provide.user({name})
 	const realHash = await hashPassword({password, salt})
 
-	if (hash === realHash) return jwt.sign({
-		name
-	}, key, {
-		expiresIn: '10s'
-	})
+	if (hash === realHash)
+		return jwt.sign({
+			name
+		}, key, {
+			expiresIn: '86400s'
+		})
 
 	throw 'wrong password'
 }
