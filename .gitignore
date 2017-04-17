@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 node_modules/
 npm-debug.log
 build/
 credentials.json
+=======
+/node_modules/
+/build/
+/npm-debug.log
+/modules/
+>>>>>>> 16a0820e937e44ae2aacd9c1ceea057f6c22d367
