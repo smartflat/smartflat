@@ -11,8 +11,7 @@ import api from '../api'
 
 // endregion
 
-// region routes
-
+// region modules
 const modules = fs
 	.readdirSync(`${__dirname}/../../modules`)
 	.map(name => path.join(`${__dirname}/../../modules`, name))
@@ -21,11 +20,9 @@ const modules = fs
 		.isDirectory()
 	)
 	.map(name => require(`${name}/build/info.js`).default({api}))
-
 // endregion
 
 // region provide & subscribe
-
 export const provide = {}
 export const subscribes = {
 	user: []
@@ -45,11 +42,9 @@ modules.forEach(module => {
 			provide.user = module.provide.user
 	}
 })
-
 // endregion
 
 // region serve
-
 export default () => modules
 	.map(({name, routes}) => routes
 		.map(([method, path, dependencies, handler]) => {
@@ -69,5 +64,4 @@ export default () => modules
 		})
 	)
 	.reduce((a, b) => [...a, ...b], [])
-
 // endregion
